@@ -6,6 +6,8 @@ assets/executables/
 assets/pretrains/
 assets/checkpoints.zip
 assets/executables.zip
+samples/
+temp/
 results/
 snapshots/
 *venv
