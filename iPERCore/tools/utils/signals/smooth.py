@@ -162,7 +162,6 @@ def pose2d_temporal_filter(keypoints, window_size, mode, **kwargs):
 
     """
 
-    global VALID_FILTERS
 
     if mode == "median":
         filtered_kps = mean_filter(keypoints, kernel_size=(window_size, 1, 1))
