@@ -33,6 +33,13 @@ def sidebar_config():
     image_size: int = st.sidebar.slider("画像サイズ", 256, 1024, 512, 128)
     num_source: int = st.sidebar.slider("ソース画像数", 1, 8, 2)
 
+    st.sidebar.markdown("### モーション設定")
+    fps: int = st.sidebar.slider("FPS", 15, 60, 25, 5)
+    pose_fc: int = st.sidebar.slider("ポーズ平滑化", 100, 500, 300, 50, 
+                                  help="値が小さいほど動きが滑らかになります")
+    cam_fc: int = st.sidebar.slider("カメラ平滑化", 50, 300, 150, 25,
+                                 help="値が小さいほどカメラ位置が安定します")
+
     st.sidebar.markdown("### 出力設定")
     st.sidebar.markdown("""
     **注意**: Docker内では `/workspace/results` を使用し、
@@ -58,7 +65,7 @@ def sidebar_config():
         ts = time.strftime("%Y%m%d_%H%M%S")
         model_id = st.sidebar.text_input("モデルID", f"model_{ts}")
 
-    return mode, gpu_ids, image_size, num_source, output_dir, assets_dir, model_id
+    return mode, gpu_ids, image_size, num_source, fps, pose_fc, cam_fc, output_dir, assets_dir, model_id
 
 
 def list_dir_names(parent: Path, exts: Iterable[str] | None = None) -> List[str]:
@@ -96,6 +103,9 @@ def run_generation(
     gpu_ids: str,
     image_size: int,
     num_source: int,
+    fps: int,
+    pose_fc: int,
+    cam_fc: int,
     output_dir: str,
     assets_dir: str,
     model_id: str,
@@ -113,7 +123,7 @@ def run_generation(
     ref_name = Path(reference).stem
     ref_path = (
         f"path?={assets_dir}/samples/references/{reference},"
-        f"name?={ref_name},pose_fc?=300"
+        f"name?={ref_name},fps?={fps},pose_fc?={pose_fc},cam_fc?={cam_fc}"
     )
 
     cmd = [
@@ -157,6 +167,9 @@ def run_full_process(
     gpu_ids: str,
     image_size: int,
     num_source: int,
+    fps: int,
+    pose_fc: int,
+    cam_fc: int,
     output_dir: str,
     assets_dir: str,
     model_id: str,
@@ -169,7 +182,7 @@ def run_full_process(
     assets_dir = str(Path(assets_dir).expanduser().resolve())
 
     src_path = f"path?={source_path},name?={model_id}"
-    ref_path = f"path?={reference_path},name?=custom_reference,pose_fc?=300"
+    ref_path = f"path?={reference_path},name?=custom_reference,fps?={fps},pose_fc?={pose_fc},cam_fc?={cam_fc}"
 
     cmd = [
         sys.executable,
@@ -296,6 +309,9 @@ def process_preprocessed_content(
     gpu_ids: str,
     image_size: int,
     num_source: int,
+    fps: int,
+    pose_fc: int,
+    cam_fc: int,
     output_dir: str,
     assets_dir: str,
 ):
@@ -322,6 +338,9 @@ def process_preprocessed_content(
             gpu_ids=gpu_ids,
             image_size=image_size,
             num_source=num_source,
+            fps=fps,
+            pose_fc=pose_fc,
+            cam_fc=cam_fc,
             output_dir=output_dir,
             assets_dir=assets_dir,
             model_id=model_id,
@@ -335,6 +354,9 @@ def process_new_content(
     gpu_ids: str,
     image_size: int,
     num_source: int,
+    fps: int,
+    pose_fc: int,
+    cam_fc: int,
     output_dir: str,
     assets_dir: str,
     model_id: str,
@@ -359,6 +381,9 @@ def process_new_content(
             gpu_ids=gpu_ids,
             image_size=image_size,
             num_source=num_source,
+            fps=fps,
+            pose_fc=pose_fc,
+            cam_fc=cam_fc,
             output_dir=output_dir,
             assets_dir=assets_dir,
             model_id=model_id,
@@ -385,6 +410,9 @@ def main():
         gpu_ids,
         image_size,
         num_source,
+        fps,
+        pose_fc,
+        cam_fc,
         output_dir,
         assets_dir,
         model_id,
@@ -395,6 +423,9 @@ def main():
             gpu_ids=gpu_ids,
             image_size=image_size,
             num_source=num_source,
+            fps=fps,
+            pose_fc=pose_fc,
+            cam_fc=cam_fc,
             output_dir=output_dir,
             assets_dir=assets_dir,
         )
@@ -404,6 +435,9 @@ def main():
             gpu_ids=gpu_ids,
             image_size=image_size,
             num_source=num_source,
+            fps=fps,
+            pose_fc=pose_fc,
+            cam_fc=cam_fc,
             output_dir=output_dir,
             assets_dir=assets_dir,
             model_id=model_id,
