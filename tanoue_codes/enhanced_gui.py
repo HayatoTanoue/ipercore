@@ -123,7 +123,8 @@ def run_generation(
     ref_name = Path(reference).stem
     ref_path = (
         f"path?={assets_dir}/samples/references/{reference},"
-        f"name?={ref_name},fps?={fps},pose_fc?={pose_fc},cam_fc?={cam_fc}"
+        f"name?={ref_name},fps?={fps},pose_fc?={pose_fc},cam_fc?={cam_fc},"
+        f"image_size?={image_size},num_source?={num_source}"
     )
 
     cmd = [
@@ -182,7 +183,10 @@ def run_full_process(
     assets_dir = str(Path(assets_dir).expanduser().resolve())
 
     src_path = f"path?={source_path},name?={model_id}"
-    ref_path = f"path?={reference_path},name?=custom_reference,fps?={fps},pose_fc?={pose_fc},cam_fc?={cam_fc}"
+    ref_path = (
+        f"path?={reference_path},name?=custom_reference,fps?={fps},pose_fc?={pose_fc},cam_fc?={cam_fc},"
+        f"image_size?={image_size},num_source?={num_source}"
+    )
 
     cmd = [
         sys.executable,
