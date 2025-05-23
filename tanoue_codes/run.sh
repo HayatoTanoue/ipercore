@@ -8,5 +8,6 @@ docker run --gpus '"device='"$USE_GPU_IDS"'"' \
     -e NVIDIA_DRIVER_CAPABILITIES=all \
     -v ${NAS_PATH}:${NAS_PATH} \
     -v ${PWD}:/workspace \
+    --net=host \
     --shm-size=200G \
-    ipercore:success bash
+    ipercore:success bash -c "cd /workspace && pip install streamlit && bash"

@@ -3,7 +3,7 @@
 from iPERCore.models import ModelsFactory
 from iPERCore.tools.utils.signals.smooth import temporal_smooth_smpls
 from iPERCore.tools.utils.filesio.persistence import clear_dir
-from iPERCore.tools.utils.multimedia.video import fuse_src_ref_multi_outputs
+from iPERCore.tools.utils.multimedia.video import fuse_src_ref_multi_outputs, make_video
 from iPERCore.services.preprocess import preprocess
 from iPERCore.services.personalization import personalize
 from iPERCore.services.options.process_info import ProcessInfo
@@ -165,6 +165,8 @@ def imitate(opt):
                 visualizer=visualizer
             )
 
+            print("="*20)
+            print("audio_path:", meta_output.audio)
             # save to video
             fuse_src_ref_multi_outputs(
                 meta_output.out_mp4, src_info_for_inference["paths"],

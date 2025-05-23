@@ -9,6 +9,7 @@ assets/executables.zip
 samples/
 temp/
 results/
+uploads/
 snapshots/
 *venv
 *.pytest
