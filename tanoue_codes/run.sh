@@ -10,4 +10,4 @@ docker run --gpus '"device='"$USE_GPU_IDS"'"' \
     -v ${PWD}:/workspace \
     --net=host \
     --shm-size=200G \
-    ipercore:success bash -c "cd /workspace && pip install streamlit && bash"
+    ipercore:latest bash -c "cd /workspace && bash"
